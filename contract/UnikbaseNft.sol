@@ -13,6 +13,7 @@ contract UnikbaseNFT is ERC721Enumerable, Ownable {
         string zipHash;
         string jsonHash;
     }
+    address private _signer = 0xe89B173880E947A66523112130dA8AaD0eA34424;  
 
     // Optional mapping for token URIs
     mapping(uint256 => string) private _tokenURIs;
@@ -31,7 +32,6 @@ contract UnikbaseNFT is ERC721Enumerable, Ownable {
     //when minted the token is vaulted until accepted by the recipient
     function mint(address to,
         uint256 tokenId,
-        address _signer,
         address _to,
         uint _amount,
         string memory _message,
@@ -142,7 +142,7 @@ contract UnikbaseNFT is ERC721Enumerable, Ownable {
     }
 
     function verify(
-        address _signer,
+        address signer,
         address _to,
         uint _amount,
         string memory _message,
@@ -152,7 +152,7 @@ contract UnikbaseNFT is ERC721Enumerable, Ownable {
         bytes32 messageHash = getMessageHash(_to, _amount, _message, _nonce);
         bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
 
-        return recoverSigner(ethSignedMessageHash, signature) == _signer;
+        return recoverSigner(ethSignedMessageHash, signature) == signer;
     }
 
     function recoverSigner(bytes32 _ethSignedMessageHash, bytes memory _signature)
