@@ -56,7 +56,7 @@ contract UnikbaseNFT is ERC721Enumerable, Ownable {
         return super.tokenURI(tokenId);
     }
 
-    function setTokenURI(uint256 tokenId, string memory _tokenURI) public onlyOwner {
+    function setTokenURI(uint256 tokenId, string memory _tokenURI) public {
         require(_exists(tokenId), "Unikbase: URI set of nonexistent token");
         _tokenURIs[tokenId] = _tokenURI;
     }
@@ -91,6 +91,10 @@ contract UnikbaseNFT is ERC721Enumerable, Ownable {
      * token-specific URI was set for the token, and if so, it deletes the token URI from
      * the storage mapping.
      */
+     function Burn(address owner, uint id) public {
+        require(ownerOf(id) == owner, "you are not the owner of this token"); 
+        _burn(id); 
+    }
     function _burn(uint256 tokenId) internal virtual override {
         //TODO: make sure the token has not been bridged
         super._burn(tokenId);
